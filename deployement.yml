@@ -1,0 +1,37 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: oracle-assignment
+  namespace: oracle
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oracle-assignment
+  template:
+    metadata:
+      labels:
+        app: oracle-assignment
+    spec:
+      containers:
+        - name: oracle-assignment
+          image: oracle-assignmnet:1.0
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: oracle-assignment
+  namespace: oracle
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      nodePort: 30001
+  selector:
+    app: oracle-assignment
+---
